@@ -3,7 +3,7 @@
 ## Install
 
 ```
-composer require vae/elasticsearchorm
+composer require vae/php-elasticsearch-orm
 ```
 
 ## Support Elasticsearch Version
