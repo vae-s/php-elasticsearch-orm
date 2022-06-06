@@ -1,0 +1,28 @@
+{
+    "name": "vae/php-elasticsearch-orm",
+    "description": "Adapt the orm query method of elasticsearch for >=php7.4",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "vae",
+            "email": "vae.s@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Vae\\PhpElasticsearchOrm\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vae\\PhpElasticsearchOrm\\Test\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "illuminate/support": "^5.3|^6.0|^7.0|^8.0",
+        "elasticsearch/elasticsearch": "~7.0",
+        "ramsey/uuid": "^4.1"
+    }
+}
