@@ -53,6 +53,12 @@ Use in Code
     $builder->index('index')->delete($id) : bool
 ```
 
+### DeleteByQuery
+
+```php
+    $builder->index('index')->deleteByParams()
+```
+
 ### Select
 
 ```php
