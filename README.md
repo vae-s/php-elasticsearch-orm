@@ -47,16 +47,16 @@ Use in Code
     $builder->index('index')->update(['key' => 'value']) : bool
 ```
 
-### Delete
+### deleteById
 
 ```php
-    $builder->index('index')->delete($id) : bool
+    $builder->index('index')->deleteById($id) : bool
 ```
 
-### DeleteByQuery
+### delete
 
 ```php
-    $builder->index('index')->deleteByParams()
+    $builder->index('index')->delete()
 ```
 
 ### Select
