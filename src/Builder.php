@@ -276,7 +276,7 @@ class Builder
      *
      * @return bool
      */
-    public function delete($id): bool
+    public function deleteById($id): bool
     {
         $result = $this->runQuery($this->query->getGrammar()->compileDelete($this->query, $id), 'delete');
 
@@ -290,7 +290,7 @@ class Builder
     /**
      * @return int|mixed
      */
-    public function deleteByParams()
+    public function delete()
     {
         $result = $this->runQuery($this->query->getGrammar()->compileSelect($this->query), 'DeleteByQuery');
         return $result['deleted'] ?? 0;
