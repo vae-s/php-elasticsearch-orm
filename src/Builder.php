@@ -288,6 +288,15 @@ class Builder
     }
 
     /**
+     * @return int|mixed
+     */
+    public function deleteByParams()
+    {
+        $result = $this->runQuery($this->query->getGrammar()->compileSelect($this->query), 'DeleteByQuery');
+        return $result['deleted'] ?? 0;
+    }
+
+    /**
      * @return int
      */
     public function count(): int
