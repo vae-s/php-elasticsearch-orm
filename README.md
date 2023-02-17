@@ -7,12 +7,13 @@ composer require vae/php-elasticsearch-orm
 ```
 
 ## Support Elasticsearch Version
->more than 7.0
 
+> more than 7.0
 
 ## Use
 
 ### PHP
+
 ```php
     //require elasticsearch config
     $config = require "elasticsearch.php";
@@ -21,16 +22,42 @@ composer require vae/php-elasticsearch-orm
 ```
 
 ### Laravel framework
+
 Add the service provider config in `config/app.php`
+
 ```php
     'providers' => [
         Vae\PhpElasticsearchOrm\Laravel\ElasticsearchOrm\OrmProvider::class,
     ] 
 ```
+
 Use in Code
+
 ```php
     $builder = app(\Vae\PhpElasticsearchOrm\Builder::class);
 ```
+
+### Hyperf framework
+
+Use in Code
+
+OrmElasticsearchClientFactory
+
+```php
+    use \Vae\PhpElasticsearchOrm\Builder;
+    use \Vae\PhpElasticsearchOrm\Query;
+    use \Vae\PhpElasticsearchOrm\Grammar;
+    class OrmElasticsearchClientFactory{
+        public static function builder()
+        {
+            // 如果在协程环境下创建，则会自动使用协程版的 Handler，非协程环境下无改变
+            $hyperfBuilder =  ApplicationContext::getContainer()->get(ClientBuilderFactory::class)->create();
+            $client = $builder->setHosts(['http://127.0.0.1:9200'])->build();
+            return new Builder(new Query(new Grammar(), $client);
+        }
+    }
+```
+
 ## Quickstart
 
 ### Create
@@ -85,11 +112,13 @@ Use in Code
 ### Condition
 
 whereTerm
+
 ```php
     $builder->whereTerm('key', 'value');
 ```
 
 whereLike（wildcard）
+
 ```php
     //value without add wildcard '*'
     $builder->whereLike('key', 'value');
@@ -123,7 +152,7 @@ nested
 
 ### Where Support Operator
 
-> ['='  => 'eq','>'  => 'gt','>=' => 'gte','<'  => 'lt','<=' => 'lte','!=' => 'ne',]
+> ['=' => 'eq','>'  => 'gt','>=' => 'gte','<'  => 'lt','<=' => 'lte','!=' => 'ne',]
 
 ```php
     $builder->where('key', '=', 'value');
