@@ -51,9 +51,9 @@ OrmElasticsearchClientFactory
         public static function builder()
         {
             // 如果在协程环境下创建，则会自动使用协程版的 Handler，非协程环境下无改变
-            $hyperfBuilder =  ApplicationContext::getContainer()->get(ClientBuilderFactory::class)->create();
-            $client = $builder->setHosts(['http://127.0.0.1:9200'])->build();
-            return new Builder(new Query(new Grammar(), $client);
+            $hyperfBuilder = ApplicationContext::getContainer()->get(ClientBuilderFactory::class)->create();
+            $client = $hyperfBuilder->setHosts(['http://127.0.0.1:9200'])->build();
+            return new Builder(new Query(new Grammar(), $client));
         }
     }
 ```
