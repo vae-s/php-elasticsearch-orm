@@ -352,9 +352,9 @@ class Builder
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getLastQueryLog(): array
+    public function getLastQueryLog(): mixed
     {
         return Arr::last($this->queryLogs);
     }
