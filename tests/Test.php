@@ -33,4 +33,11 @@ class Test extends TestCase
         var_dump($result);
         return $result;
     }
+
+    public function testBatchCreate()
+    {
+        $result = static::$builder->index('test')->batchCreate([['key' => 'value2'], ['key' => 'value3']]);
+        var_dump($result);
+        return $result;
+    }
 }

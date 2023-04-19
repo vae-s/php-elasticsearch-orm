@@ -1,6 +1,6 @@
 <?php
 
-namespace Vae\PhpElasticsearchOrm\Laravel\ElasticsearchOrm;
+namespace Vae\PhpElasticsearchOrm\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use Vae\PhpElasticsearchOrm\Builder;
