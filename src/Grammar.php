@@ -128,8 +128,7 @@ class Grammar
             ];
             unset($item['id']);
             $body[] = $item;
-        }
-        return array_merge(['body' => $body], $components);
+        }return array_merge(['body' => $body], $components);
     }
 
     /**
