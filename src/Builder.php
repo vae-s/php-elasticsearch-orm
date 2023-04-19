@@ -243,6 +243,40 @@ class Builder
 
     /**
      * @param array $data
+     * @param string $key primary_key
+     * @return mixed
+     * Created by hongshuobin 2023/4/19 12:01
+     */
+    public function batchCreate(array $data, string $key = 'id')
+    {
+        foreach ($data as &$item) {
+            $item['id'] = $item[$key] ?? Uuid::uuid4()->toString();
+        }
+        return $this->runQuery(
+            $this->query->getGrammar()->compileBulkCreate($this->query, $data),
+            'bulk'
+        );
+    }
+
+    /**
+     * @param array $data
+     * @param string $key
+     * @return mixed
+     * Created by hongshuobin 2023/4/19 13:50
+     */
+    public function batchUpdateOrCreate(array $data, string $key = 'id')
+    {
+        foreach ($data as &$item) {
+            $item['id'] = $item[$key] ?? Uuid::uuid4()->toString();
+        }
+        return $this->runQuery(
+            $this->query->getGrammar()->compileBulkUpdateOrCreate($this->query, $data),
+            'bulk'
+        );
+    }
+
+    /**
+     * @param array $data
      * @param string|int|null $id
      * @param string $key
      *

@@ -88,6 +88,52 @@ class Grammar
 
     /**
      * @param Query $builder
+     * @param array $data
+     * @return array
+     * Created by hongshuobin 2023/4/19 12:01
+     */
+    public function compileBulkCreate(Query $builder, array $data): array
+    {
+        $components = $this->compileComponents($builder);
+        $body = [];
+        foreach ($data as $item) {
+            $body[] = [
+                'create' => [
+                    '_index' => $components['index'],
+                    '_id' => $item['id'],
+                ]
+            ];
+            unset($item['id']);
+            $body[] = $item;
+        }
+        return array_merge(['body' => $body], $components);
+    }
+
+    /**
+     * @param Query $builder
+     * @param array $data
+     * @return array
+     * Created by hongshuobin 2023/4/19 13:50
+     */
+    public function compileBulkUpdateOrCreate(Query $builder, array $data): array
+    {
+        $components = $this->compileComponents($builder);
+        $body = [];
+        foreach ($data as $item) {
+            $body[] = [
+                'index' => [
+                    '_index' => $components['index'],
+                    '_id' => $item['id'],
+                ]
+            ];
+            unset($item['id']);
+            $body[] = $item;
+        }
+        return array_merge(['body' => $body], $components);
+    }
+
+    /**
+     * @param Query $builder
      * @param $id
      *
      * @return array
