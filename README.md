@@ -68,10 +68,42 @@ OrmElasticsearchClientFactory
     $builder->index('index')->createCollection(['key' => 'value']);
 ```
 
+### Batch Create
+
+```php
+    $builder->index('index')->batchCreate(
+        [
+            'key1' => 'v1',
+            'key2' => 'v2',
+        ],
+        [
+            'key3' => 'v3',
+            'key4' => 'v4',
+        ]       
+    );
+```
+
 ### Update
 
 ```php
     $builder->index('index')->update(['key' => 'value']) : bool
+```
+
+### Batch Update Or Update
+
+```php
+    $builder->index('index')->batchUpdateOrCreate(
+        [
+            'id' => '1', 
+            'key1' => 'v1',
+            'key2' => 'v2',
+        ],
+        [
+            'id' => 2,
+            'key3' => 'v3',
+            'key4' => 'v4',
+        ]       
+    );
 ```
 
 ### deleteById
@@ -148,6 +180,14 @@ nested
     $builder->where(function(Builder $query){
         $query->whereTerm('key', 'value');
     });
+```
+
+search nested data
+
+```php
+    $nestedKey = "nested_key";
+    $key = "key";
+    $builder->where("{$nestedKey}@{$key}", '=', 'value');
 ```
 
 ### Where Support Operator
