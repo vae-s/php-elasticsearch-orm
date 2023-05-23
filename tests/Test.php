@@ -24,7 +24,6 @@ class Test extends TestCase
     /**
      * @doesNotPerformAssertions
      * @return object
-     * Created by hongshuobin 2022/6/6 17:15
      * @throws \Exception
      */
     public function testCreate()
@@ -34,9 +33,26 @@ class Test extends TestCase
         return $result;
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testBatchCreate()
     {
         $result = static::$builder->index('test')->batchCreate([['key' => 'value2'], ['key' => 'value3']]);
+        var_dump($result);
+        return $result;
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testScriptOrder()
+    {
+        $result = static::$builder->index('qy_list_gather_data')->orderBy('_script', [
+            'script' => 'Math.random()',
+            'type' => 'number',
+            'order' => 'asc'
+        ])->paginate(1, 2);
         var_dump($result);
         return $result;
     }
