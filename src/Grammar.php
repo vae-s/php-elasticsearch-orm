@@ -168,9 +168,9 @@ class Grammar
 
         foreach ($builder->aggs as $field => $aggItem) {
             if (is_array($aggItem)) {
-                $aggs[] = $aggItem;
+                $aggs[$field] = $aggItem;
             } else {
-                $aggs[$field.'_'.$aggItem] = [$aggItem => ['field' => $field]];
+                $aggs[$field . '_' . $aggItem] = [$aggItem => ['field' => $field]];
             }
         }
 
