@@ -86,7 +86,8 @@ OrmElasticsearchClientFactory
 ### Update
 
 ```php
-    $builder->index('index')->update(['key' => 'value']) : bool
+    $builder->index('index')->update(['key' => 'value']);
+    $builder->index('index')->update(['key' => ['key2' => 'value']]);
 ```
 
 ### Batch Update Or Update
