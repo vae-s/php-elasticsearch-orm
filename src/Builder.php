@@ -296,11 +296,13 @@ class Builder
     {
         $result = $this->runQuery($this->query->getGrammar()->compileUpdate($this->query, $id, $data), 'update');
 
-        if (!isset($result['result']) || $result['result'] !== 'updated') {
-            throw new RunTimeException('Update error params: '.json_encode($this->getLastQueryLog()));
+        if (!isset($result['result']) || ($result['result'] !== 'updated' && $result['result'] !== 'noop')) {
+            throw new RunTimeException('Update error params: ' . json_encode($this->getLastQueryLog()));
         }
-
-        return true;
+        if ($result['result'] === 'updated') {
+            return true;
+        }
+        return false;
     }
 
     /**
