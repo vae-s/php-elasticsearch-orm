@@ -314,11 +314,13 @@ class Builder
     {
         $result = $this->runQuery($this->query->getGrammar()->compileDelete($this->query, $id), 'delete');
 
-        if (!isset($result['result']) || $result['result'] !== 'deleted') {
-            throw new RunTimeException('Delete error params:'.json_encode($this->getLastQueryLog()));
+        if (!isset($result['result']) || ($result['result'] !== 'deleted' && $result['result'] !== 'not_found')) {
+            throw new RunTimeException('Delete error params:' . json_encode($this->getLastQueryLog()));
         }
-
-        return true;
+        if ($result['result'] === 'deleted') {
+            return true;
+        }
+        return false;
     }
 
     /**
