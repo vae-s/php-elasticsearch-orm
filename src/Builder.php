@@ -37,7 +37,7 @@ use RuntimeException;
  * @method Builder where($column, $operator = null, $value = null, string $leaf = 'term', string $boolean = 'and')
  * @method Builder whereLike($field, $value = null)
  * @method Builder orWhere($field, $operator = null, $value = null, $leaf = 'term')
- * @method Builder whereNested(Closure $callback, string $boolean)
+ * @method Builder whereNested(string $nestedColumn, Closure $callback, $operator = null, string $boolean = 'and')
  * @method Builder newQuery()
  * @method Builder getElasticSearch()
  */
@@ -415,6 +415,14 @@ class Builder
     protected function sourceToObject(array $result): object
     {
         return (object) array_merge($result['_source'], ['_id' => $result['_id'], '_score' => $result['_score']]);
+    }
+
+    /**
+     * @return array
+     */
+    public function toBody(): array
+    {
+        return $this->query->getGrammar()->compileSelect($this->query);
     }
 
     /**

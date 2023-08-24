@@ -394,7 +394,7 @@ class Query
     public function where($column, $operator = null, $value = null, string $leaf = 'term', string $boolean = 'and'): self
     {
         if ($column instanceof Closure) {
-            return $this->whereNested($column, $boolean);
+            return $this->nestedQuery($column, $boolean);
         }
 
         if (func_num_args() === 2) {
@@ -460,12 +460,37 @@ class Query
     }
 
     /**
+     * @param string $nestedColumn
      * @param Closure $callback
-     * @param string  $boolean
+     * @param null $operator
+     * @param string $boolean
      *
      * @return Query
      */
-    public function whereNested(Closure $callback, string $boolean): self
+    public function whereNested(string $nestedColumn, Closure $callback, $operator = null, string $boolean = 'and'): self
+    {
+        $query = $this->newQuery();
+        call_user_func($callback, $query);
+        $type = 'Nested';
+        $column = $nestedColumn;
+        $operator = $operator ? $this->operators[$operator] : $operator;
+        if (count($query->wheres)) {
+            foreach ($query->wheres as &$where) {
+                if (!empty($where['column']) && !str_starts_with($where['column'], "{$column}.")) {
+                    $where['column'] = "{$column}.{$where['column']}";
+                }
+            }
+            $this->wheres[] = compact('type', 'query', 'boolean', 'column', 'operator');
+        }
+        return $this;
+    }
+
+    /**
+     * @param Closure $callback
+     * @param string $boolean
+     * @return $this
+     */
+    protected function nestedQuery(Closure $callback, string $boolean): self
     {
         $query = $this->newQuery();
 
@@ -539,7 +564,7 @@ class Query
     protected function addNestedWhereQuery(Query $query, string $boolean = 'and'): self
     {
         if (count($query->wheres)) {
-            $type = 'Nested';
+            $type = 'NestedQuery';
             $this->wheres[] = compact('type', 'query', 'boolean');
         }
 
