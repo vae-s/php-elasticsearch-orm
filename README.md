@@ -175,7 +175,7 @@ where in
     $builder->whereIn('key', ['value1', 'value2', ...]);
 ```
 
-nested
+nestedQuery
 
 ```php
     $builder->where(function(Builder $query){
@@ -184,6 +184,14 @@ nested
 ```
 
 search nested data
+
+```php
+    $nestedColumn = "nested_column";
+    $builder->whereNested($nestedColumn, function ($query) {
+        $query->where('key1', 'value1')
+        $query->where('key2', 'value2')
+    });
+```
 
 ```php
     $nestedKey = "nested_key";

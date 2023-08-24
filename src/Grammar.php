@@ -240,8 +240,14 @@ class Grammar
             $must = [];
             $mustNot = [];
             foreach ($wheres as $where) {
-                if ($where['type'] === 'Nested') {
+                if ($where['type'] === 'NestedQuery') {
                     $must[] = $this->compileWheres($where['query']);
+                } elseif ($where['type'] === 'Nested') {
+                    if ($where['operator'] == 'ne') {
+                        $mustNot[] = $this->whereNested($where['column'], $where['query']);
+                    } else {
+                        $must[] = $this->whereNested($where['column'], $where['query']);
+                    }
                 } else {
                     if ($where['operator'] == 'ne') {
                         $mustNot[] = $this->whereLeaf($where['leaf'], $where['column'], $where['operator'], $where['value']);
@@ -280,7 +286,7 @@ class Grammar
     {
         if (strpos($column, '@') !== false) {
             $columnArr = explode('@', $column);
-            $ret = ['nested'=>['path'=>$columnArr[0]]];
+            $ret = ['nested' => ['path' => $columnArr[0]]];
             $ret['nested']['query']['bool']['must'][] = $this->whereLeaf($leaf, implode('.', $columnArr), $operator, $value);
 
             return $ret;
@@ -309,6 +315,21 @@ class Grammar
             ]];
         }
         return [];
+    }
+
+    /**
+     * @param string $nestedColumn
+     * @param Query $builder
+     * @return array[]
+     */
+    protected function whereNested(string $nestedColumn, Query $builder): array
+    {
+        return [
+            'nested' => [
+                'path' => $nestedColumn,
+                'query' => $this->compileWheres($builder),
+            ]
+        ];
     }
 
     /**
