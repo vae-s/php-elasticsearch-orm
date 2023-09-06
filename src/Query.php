@@ -40,9 +40,9 @@ class Query
     public array $aggs = [];
 
     /**
-     * @var string
+     * @var string|array
      */
-    public string $index;
+    public string|array $index;
 
     /**
      * @var string
