@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vae\PhpElasticsearchOrm;
 
-use Illuminate\Support\Arr;
+use Tightenco\Collect\Support\Arr;
 
 class Grammar
 {
@@ -126,7 +126,8 @@ class Grammar
             ];
             unset($item['id']);
             $body[] = $item;
-        }return array_merge(['body' => $body], $components);
+        }
+        return array_merge(['body' => $body], $components);
     }
 
     /**

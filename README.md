@@ -1,4 +1,22 @@
 # PHP ELASTICSEARCH ORM
+## 从 v1.x 升级到 v2.0 指南
+
+## 变更
+
+1. **依赖变更**：
+    - 移除了 `illuminate/support` 依赖
+    - 新增 `tightenco/collect` 依赖
+
+## 迁移步骤
+
+### 1. 修改 composer.json
+```json
+{
+  "require": {
+    "vae/php-elasticsearch-orm": "^2.0"
+  }
+}
+```
 
 ## Install
 

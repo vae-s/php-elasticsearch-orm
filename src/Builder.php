@@ -4,10 +4,10 @@ namespace Vae\PhpElasticsearchOrm;
 
 use BadMethodCallException;
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Ramsey\Uuid\Uuid;
 use RuntimeException;
+use Ramsey\Uuid\Uuid;
+use Tightenco\Collect\Support\Collection;
+use Tightenco\Collect\Support\Arr;
 
 /**
  * @method Builder index(string|array $index)
@@ -124,16 +124,15 @@ class Builder
 
         $maxPage = intval(ceil($results['hits']['total']['value'] / $perPage));
 
-        return Collection::make([
+        return new Collection([
             'total'        => $results['hits']['total']['value'],
             'per_page'     => $perPage,
             'current_page' => $page,
             'next_page'    => $page < $maxPage ? $page + 1 : $maxPage,
-            //'last_page' => $maxPage,
-            'total_pages' => $maxPage,
-            'from'        => $from,
-            'to'          => $from + $perPage,
-            'data'        => $data,
+            'total_pages'  => $maxPage,
+            'from'         => $from,
+            'to'           => $from + $perPage,
+            'data'         => $data,
         ]);
     }
 
@@ -283,7 +282,7 @@ class Builder
      */
     public function createCollection(array $data, $id = null, $key = 'id'): Collection
     {
-        return Collection::make($this->create($data, $id, $key));
+        return new Collection([$this->create($data, $id, $key)]);
     }
 
     /**
@@ -354,9 +353,9 @@ class Builder
             $this->queryLogs[] = $params;
         }
 
-        return tap(call_user_func([$this->query->getElasticSearch(), $method], $params), function () {
-            $this->resetQuery();
-        });
+        $result = call_user_func([$this->query->getElasticSearch(), $method], $params);
+        $this->resetQuery();
+        return $result;
     }
 
     /**
@@ -402,7 +401,7 @@ class Builder
      */
     protected function metaData(array $results): Collection
     {
-        return Collection::make($results['hits']['hits'])->map(function ($hit) {
+        return (new Collection($results['hits']['hits']))->map(function ($hit) {
             return $this->sourceToObject($hit);
         });
     }
