@@ -4,7 +4,7 @@ namespace Vae\PhpElasticsearchOrm;
 
 use BadMethodCallException;
 use Closure;
-use Elasticsearch\Endpoints\Update;
+use Elasticsearch\Endpoints\UpdateByQuery;
 use RuntimeException;
 use Ramsey\Uuid\Uuid;
 use Tightenco\Collect\Support\Collection;
@@ -347,7 +347,7 @@ class Builder
         if (empty($values)) {
             return false;
         }
-        $esUpdateParams = Arr::only($updateConfigs,  (new Update())->getParamWhitelist());
+        $esUpdateParams = Arr::only($updateConfigs,  (new UpdateByQuery())->getParamWhitelist());
         $params = $this->query->getGrammar()->compileSelect($this->query);
         $params = array_merge($params, $esUpdateParams);
         $scriptSource = [];
