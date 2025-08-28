@@ -4,6 +4,7 @@ namespace Vae\PhpElasticsearchOrm;
 
 use BadMethodCallException;
 use Closure;
+use Elasticsearch\Endpoints\Update;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
@@ -340,6 +341,33 @@ class Builder
         $result = $this->runQuery($this->query->getGrammar()->compileSelect($this->query), 'count');
 
         return $result['count'];
+    }
+
+    public function updateByQuery(array $values, array $updateConfigs = [])
+    {
+        if (empty($values)) {
+            return false;
+        }
+        $esUpdateParams = Arr::only($updateConfigs,  (new Update())->getParamWhitelist());
+        $params = $this->query->getGrammar()->compileSelect($this->query);
+        $params = array_merge($params, $esUpdateParams);
+        $scriptSource = [];
+        $scriptParams = [];
+        foreach ($values as $key => $value) {
+            $paramsKey = str_replace('.', '_', $key);
+            $scriptSource[] = "ctx._source.{$key} = params.{$paramsKey};";
+            $scriptParams[$paramsKey] = $value;
+        }
+        $params['body']['script'] = [
+            'source' => implode('', $scriptSource),
+            'params' => $scriptParams,
+        ];
+        try {
+            $result = $this->runQuery($params, 'updateByQuery');
+            return $result['updated'] ?? 0;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
